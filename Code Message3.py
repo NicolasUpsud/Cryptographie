@@ -3,7 +3,7 @@
 #import os
 
 with open('Message3.txt' , 'r', encoding='utf8') as file:
-    message2 = file.read()
+    message3 = file.read()
 
     
 def frequence(texte):
@@ -49,4 +49,4 @@ def dechiffrement_cesar(message,cle):
         new_message = ''.join(new_liste)    
     return new_message
 
-print(dechiffrement_cesar(message2 , deviner_cle_cesar(message2)))
+print(dechiffrement_cesar(message3 , deviner_cle_cesar(message3)))
