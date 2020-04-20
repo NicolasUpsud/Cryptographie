@@ -96,20 +96,20 @@ def dechiffrement_cesar(message,cle):
 
 print(dechiffrement_cesar("xq#phvvdjh#dyhf#ghv#hvsdfhvhh", 3))
 #%%                               Question 9
+
+def afficher(x):
+    if x != None:
+        print(x)
 message_secret1 = 'mhvxlvmxohvfhvdu'
 message_secret2 = 'dwwdtxhdodxeh'
 message_secret3 = "Mðspjp{h{pvuz'(']v|z'ñ{lz'hyyp}ðz'ç'kðjopmmyly'jl'tlzzhnl5'Sl'jvkl'kl'Jðzhy'u.h'kðzvythpz'ws|z'kl'zljyl{z'wv|y'}v|z5"
 
 for i in range(25):
-    print(dechiffrement_cesar(message_secret1,i))
-    
-
+    afficher(dechiffrement_cesar(message_secret1,i))
 for i in range(25):
-    print(dechiffrement_cesar(message_secret2,i))
-    
-
+    afficher(dechiffrement_cesar(message_secret2,i))
 for i in range(25):
-    print(dechiffrement_cesar(message_secret3,i))                                         
+    afficher(dechiffrement_cesar(message_secret3,i))                                      
                          
 #%%                       #chiffre de Vigenère#
 #%%                               Question 1
@@ -169,4 +169,46 @@ def deviner_cle_cesar(message):
 print(deviner_cle_cesar("Mðspjp{h{pvuz'(']v|z'ñ{lz'hyyp}ðz'ç'kðjopmmyly'jl'tlzzhnl5'Sl'jvkl'kl'Jðzhy'u.h'kðzvythpz'ws|z'kl'zljyl{z'wv|y'}v|z5"))
 #%%                               Question 6
 def deviner_cle_vigenere(message, longueur):
-    for
+    """
+    prend en arguments le message chiffré (une chaine de caractère) et une longueur possible de clé (un entier) et retourne la clé la plus probable en utilisant une analyse de fréquence (liste d'entier).
+    """
+    cle=[]
+    for i in range(longueur):
+        # analyse de fréquence (sur quoi les caractères en position longueur*k+i)
+        # prendre un caractère sur longueur en position longueur*k+i :
+        message_i = message[i : len(message) : longueur]
+        cle.append(deviner_cle_cesar(message_i))
+
+    return cle
+#%%                               Question 7
+message_secret = '#Pk#gnljlui&gi&Ymmhrîui&hwz#yt#w\x7fvxîpi&gi&floijxhqkqx&ssr|erslgeízlu{h0&f”kvx&xr&floijxhqkqx&sex#w{ewzlx{wmuq0&peov${qi&pîsh$rhxzui&gy&piyvemh$ioeou$vhyz/$yxm|drz#wg#tuvmzlst#hgqw&firxm3fm2#îzui&uisspgfík#tgu$jhw&oizwvkv$jljlìvkqxkv0&fstwvglvkpitw$æ#yt#w\x7fvxîpi&gi&floijxhqkqx&pstrerslgeízlu{h$irqsh$rh$ikmlivk#hk#Gïvex#,wx+oo${wmrlwk#gksitgetw$irqsh$irqvrwgqx/1$Ihxzh$sìxnrhk#vïvmywi&dmtvm&ã$r*etdp\x7fvi&gi&ivïtykqgkv0&fi&tyo#iyw${q$gyetwemh$jìgovml#w{u$rhw&floijxhqkqxy#quqsgotndfïwmwxiy1$Ihtkqhgqx&oi&floijxh$jh$\\lkkqìxh$g#ízì$vhviì$vdv&oi&peprv&sv{vwohr&Ivohhxlgn#Ogvmynm&tyo#e&syhomï#wg#qïwlugi&hr&4<<62&Lp&q“uijxh$voyy#hksyov$ihxzh$ïsswxi&dyixrk#wïfyxlxï1\x0e\x10Lp&hwz#rupqï#eoqwo#e{#|o{i&vmîfpk#it#vïiíxhrih$gx$jltrrqgwi&gy&{zoh$ylìioi&Epglwk#hk#Zojitëvk/$wxm&oi&gíiumz#,oqxïjvï#ä&xr&floijxhqkqx&sp{v$irqvoi~h-&getv$yrr&wvglxï#hkv$ikmlivkv$vdv{#it#5;;:4#St#xxry|h$kq$ldmz#hïmä&xrk#qïwlugi&gi&floijxhqkqx&drgosmxi&getv${q$iryxw$zueowí&gi&Jmuyet#Fgwxovxg#Fkopgvs&sexx$kq$78791'
+
+def pgcd(a,b):
+    if b == 0:
+        return a
+    while a%b !=0:
+        a, b = b, a%b
+    return b
+
+def pgcd_list(l):
+    if len(l) == 0:
+        return 0
+    else :
+        return pgcd(l[0], pgcd_list(l[1:]))
+
+def repetition(message, k = 3, n = 10):
+    # cherche les n premières répétitions de taille k dans message
+    compteur = 0
+    ecarts = []
+    for i in range (1,len(message)-k+1):
+        for j in range(i+1,len(message)-k+1):
+            if compteur !=n:
+                if (message[i:i+k] == message[j:j+k]):
+                    print("{}ième répétition : {}\t écart : {}".format(compteur, message[i:i+k], j-i))
+                    compteur = compteur +1
+                    ecarts.append(j-i)
+    return pgcd_list(ecarts)
+print("La longeur de la clé est {}.".format(repetition(message_secret)))
+
+#%%                               Question dechiffrer le message secret
+print(dechiffre_vigenere(message_secret, deviner_cle_vigenere(message_secret, repetition(message_secret, k = 3, n = 10))))
